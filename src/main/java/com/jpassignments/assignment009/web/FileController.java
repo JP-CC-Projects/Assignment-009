@@ -2,6 +2,7 @@ package com.jpassignments.assignment009.web;
 
 import com.jpassignments.assignment009.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +12,11 @@ import java.util.List;
 
 @RestController
 public class FileController {
+
+    //assigns key "object.name" located in application.properties to objectName;
+    @Value("${object.name}")
+    private String objectName;
+
     @Autowired
     private ApplicationContext applicationContext;
     @Autowired
@@ -18,6 +24,7 @@ public class FileController {
 
     @GetMapping("/gluten-free")
     public List<String> glutenFreeRecipes() throws IOException {
+        System.out.println(objectName);
         return null;
     }
 
@@ -43,7 +50,7 @@ public class FileController {
 
 
 
-    @GetMapping("")
+    @GetMapping("/")
     public List<String> readLines() throws IOException {
         System.out.println("################################");
         FileService fileService = applicationContext.getBean(FileService.class);
