@@ -1,6 +1,7 @@
 package com.jpassignments.assignment009.web;
 
 import com.jpassignments.assignment009.service.FileService;
+import domain.Recipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -9,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
+
+import static com.jpassignments.assignment009.service.FileService.recipeReaderTest;
 
 @RestController
 public class FileController {
@@ -23,9 +27,8 @@ public class FileController {
     private FileService fileService;
 
     @GetMapping("/gluten-free")
-    public List<String> glutenFreeRecipes() throws IOException {
-        System.out.println(objectName);
-        return null;
+    public Optional<List<String>> glutenFreeRecipes() throws IOException {
+        return glutenFreeRecipes();
     }
 
     @GetMapping("/vegan")
@@ -50,16 +53,23 @@ public class FileController {
 
 
 
-    @GetMapping("/")
-    public List<String> readLines() throws IOException {
-        System.out.println("################################");
-        FileService fileService = applicationContext.getBean(FileService.class);
-        System.out.println(fileService);
-        fileService = applicationContext.getBean(FileService.class);
-        System.out.println(fileService);
-        fileService = applicationContext.getBean(FileService.class);
-        System.out.println(fileService);
+//    @GetMapping("/")
+//    public List<Recipe> readLines() throws IOException {
+//        System.out.println("################################");
+//        FileService fileService = applicationContext.getBean(FileService.class);
+//        System.out.println(fileService);
+//        fileService = applicationContext.getBean(FileService.class);
+//        System.out.println(fileService);
+//        fileService = applicationContext.getBean(FileService.class);
+//        System.out.println(fileService);
+//
+//        return fileService.parseFileAndReturnRecipeList("src/main/resources/recipes.txt");
+//    }
 
-        return fileService.readFile("text.txt");
+    @GetMapping("/")
+    public List<Recipe> readLines() throws IOException {
+        recipeReaderTest();
+        return null;
     }
+
 }
