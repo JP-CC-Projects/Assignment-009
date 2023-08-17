@@ -5,18 +5,27 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
+
 import org.apache.commons.csv.*;
 
 @Service
 //@Scope("prototype")
 public class FileService {
+    public Recipe stringToRecipe (List<String> stringList){
 
-    public static void recipeReaderTest() throws IOException {
+        return null;
+    }
+
+
+
+    public static String recipeReaderTest() throws IOException {
         Reader in = new FileReader("src/main/resources/recipes.txt");
-        Iterable<CSVRecord> records = CSVFormat.DEFAULT.withIgnoreSurroundingSpaces().parse(in);
+        Iterable<CSVRecord> records = CSVFormat.DEFAULT.withIgnoreSurroundingSpaces().withEscape('\\').parse(in);
         for (CSVRecord record : records) {
             System.out.println(record.get(3));
         }
+        return null;
     }
 
     public List<Recipe> parseFileAndReturnRecipeList(String fileName) throws IOException {

@@ -28,7 +28,8 @@ public class FileController {
 
     @GetMapping("/gluten-free")
     public Optional<List<String>> glutenFreeRecipes() throws IOException {
-        return glutenFreeRecipes();
+        recipeReaderTest();
+        return null;
     }
 
     @GetMapping("/vegan")
