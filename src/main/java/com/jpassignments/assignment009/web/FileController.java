@@ -7,12 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
-
-import static com.jpassignments.assignment009.service.FileService.recipeReaderTest;
 
 @RestController
 public class FileController {
@@ -27,8 +23,7 @@ public class FileController {
     private FileService fileService;
 
     @GetMapping("/gluten-free")
-    public Optional<List<String>> glutenFreeRecipes() throws IOException {
-        recipeReaderTest();
+    public String glutenFreeRecipes() throws IOException {
         return null;
     }
 
@@ -69,8 +64,7 @@ public class FileController {
 
     @GetMapping("/")
     public List<Recipe> readLines() throws IOException {
-        recipeReaderTest();
+        Recipe recipe = FileService.getRecipeList();
         return null;
     }
-
 }

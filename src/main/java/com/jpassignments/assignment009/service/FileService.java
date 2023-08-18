@@ -12,21 +12,53 @@ import org.apache.commons.csv.*;
 @Service
 //@Scope("prototype")
 public class FileService {
-    public Recipe stringToRecipe (List<String> stringList){
+
+    //No args constructor that returns all recipes.
+    public static Recipe getRecipeList(){
+        return null;
+    }
+
+    //Helper class that takes a recipe property name and a boolean
+    //converts it to an ArrayList of POJOs
+    //and finally returns the Recipe POJOs as Strings
+    public static Recipe getRecipeList(String columnName, Boolean bool){
 
         return null;
     }
 
 
+    public void fileService() throws IOException {
+        Iterable<CSVRecord> convertedCsvRecords = recipeReaderTest();
+        List<String> convertedStringArrList = csvRecordToStringArrList(convertedCsvRecords);
+        Recipe recipePOJO = new Recipe(convertedStringArrList);
+        System.out.println(recipePOJO);
+    }
 
-    public static String recipeReaderTest() throws IOException {
+    public Iterable<CSVRecord> recipeReaderTest() throws IOException {
         Reader in = new FileReader("src/main/resources/recipes.txt");
-        Iterable<CSVRecord> records = CSVFormat.DEFAULT.withIgnoreSurroundingSpaces().withEscape('\\').parse(in);
-        for (CSVRecord record : records) {
-            System.out.println(record.get(3));
-        }
-        return null;
+        Iterable<CSVRecord> csvRecordList = CSVFormat.DEFAULT.withIgnoreSurroundingSpaces().withEscape('\\').parse(in);
+        return csvRecordList;
     }
+
+    public List<String> csvRecordToStringArrList(Iterable<CSVRecord> csvRecordList) {
+        List<String> stringList = new ArrayList<>();
+        for(CSVRecord csvRecord : csvRecordList){
+            for(int i = 0; i < 11; i++){
+                stringList.add(csvRecord.get(i));
+            }
+        }
+        System.out.println(stringList);
+        return stringList;
+    }
+        public List<String> csvRecordToStringArrList(CSVRecord csvRecord){
+            List<String> stringArrList = new ArrayList<>();
+            for (String s : csvRecord) {
+            stringArrList.add(s);
+        }
+        return stringArrList;
+    }
+
+
 
     public List<Recipe> parseFileAndReturnRecipeList(String fileName) throws IOException {
         List<String> recipeStringList = this.fileToStringList(fileName);
@@ -54,15 +86,5 @@ public class FileService {
         }
         System.out.println(recipeList);
         return recipeList;
-    }
-    public List<Recipe> filteredStringListToRecipeList(List<String> recipeStringList, String diet, Boolean bool) {
-        List<Recipe> filteredRecipeList = new ArrayList<>();
-        for (String recipeStringLine : recipeStringList) {
-            String[] stringArr = recipeStringLine.split(",");
-            Recipe recipe = new Recipe(stringArr);
-            filteredRecipeList.add(recipe);
-        }
-        System.out.println(filteredRecipeList);
-        return filteredRecipeList;
     }
 }

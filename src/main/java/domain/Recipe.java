@@ -1,5 +1,6 @@
 package domain;
 import java.math.BigDecimal;
+import java.util.List;
 
 public class Recipe {
     private Integer cookingMinutes; //0
@@ -14,6 +15,23 @@ public class Recipe {
     private String title;
     private Boolean vegan;
     private Boolean vegetarian;
+    public Recipe (){
+
+    }
+    public Recipe (List<String> stringArrList){
+        this.cookingMinutes = Integer.parseInt(stringArrList.get(0));
+        this.dairyFree = Boolean.parseBoolean(stringArrList.get(1));
+        this.glutenFree = Boolean.parseBoolean(stringArrList.get(2));
+        this.instructions = stringArrList.get(3);
+        this.preparationMinutes = (int)Float.parseFloat(stringArrList.get(4));
+        this.pricePerServing = new BigDecimal(stringArrList.get(5));
+        this.readyInMinutes = Integer.parseInt(stringArrList.get(6));
+        this.servings = Double.parseDouble(stringArrList.get(7));
+        this.spoonacularScore = Double.parseDouble(stringArrList.get(8));
+        this.title = stringArrList.get(9);
+        this.vegan = Boolean.parseBoolean(stringArrList.get(10));
+        this.vegetarian = Boolean.parseBoolean(stringArrList.get(11));
+    }
 
     public Recipe (String[] stringArr){
         this.cookingMinutes = Integer.parseInt(stringArr[0]);
