@@ -2,10 +2,10 @@ package com.jpassignments.assignment009.service;
 
 import domain.Recipe;
 import org.springframework.stereotype.Service;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.apache.commons.csv.*;
 
@@ -14,50 +14,54 @@ import org.apache.commons.csv.*;
 public class FileService {
 
     //No args constructor that returns all recipes.
-    public static Recipe getRecipeList(){
+    public static Recipe getRecipeList() {
         return null;
     }
 
     //Helper class that takes a recipe property name and a boolean
     //converts it to an ArrayList of POJOs
     //and finally returns the Recipe POJOs as Strings
-    public static Recipe getRecipeList(String columnName, Boolean bool){
+    public static Recipe getRecipeList(String columnName, Boolean bool) {
 
         return null;
     }
 
 
-    public void fileService() throws IOException {
-        Iterable<CSVRecord> convertedCsvRecords = recipeReaderTest();
+    public List<String> fileService() throws IOException {
+        Iterable<CSVRecord> convertedCsvRecords = recipeReaderToCSVRecordList();
         List<String> convertedStringArrList = csvRecordToStringArrList(convertedCsvRecords);
-        Recipe recipePOJO = new Recipe(convertedStringArrList);
-        System.out.println(recipePOJO);
+//        System.out.println("convertedStringArrList" + convertedStringArrList);
+        return convertedStringArrList;
     }
 
-    public Iterable<CSVRecord> recipeReaderTest() throws IOException {
-        Reader in = new FileReader("src/main/resources/recipes.txt");
-        Iterable<CSVRecord> csvRecordList = CSVFormat.DEFAULT.withIgnoreSurroundingSpaces().withEscape('\\').parse(in);
+    public Iterable<CSVRecord> recipeReaderToCSVRecordList() throws IOException {
+        Reader inputFile = new FileReader("src/main/resources/recipes.txt");
+        Iterable<CSVRecord> csvRecordList = CSVFormat.DEFAULT
+                .withIgnoreSurroundingSpaces()
+                .withEscape('\\')
+                .withHeader()
+                .parse(inputFile);
         return csvRecordList;
     }
 
     public List<String> csvRecordToStringArrList(Iterable<CSVRecord> csvRecordList) {
         List<String> stringList = new ArrayList<>();
-        for(CSVRecord csvRecord : csvRecordList){
-            for(int i = 0; i < 11; i++){
+        for (CSVRecord csvRecord : csvRecordList) {
+            for (int i = 0; i < 11; i++) {
                 stringList.add(csvRecord.get(i));
             }
         }
-        System.out.println(stringList);
+//        System.out.println(stringList);
         return stringList;
     }
-        public List<String> csvRecordToStringArrList(CSVRecord csvRecord){
-            List<String> stringArrList = new ArrayList<>();
-            for (String s : csvRecord) {
+
+    public List<String> csvRecordToStringArrList(CSVRecord csvRecord) {
+        List<String> stringArrList = new ArrayList<>();
+        for (String s : csvRecord) {
             stringArrList.add(s);
         }
         return stringArrList;
     }
-
 
 
     public List<Recipe> parseFileAndReturnRecipeList(String fileName) throws IOException {
@@ -65,6 +69,7 @@ public class FileService {
         List<Recipe> listOfRecipes = stringListToRecipeList(recipeStringList);
         return listOfRecipes;
     }
+
     public List<String> fileToStringList(String fileName) throws IOException {
         List<String> list = new ArrayList<>();
         File file = new File(fileName);
@@ -84,7 +89,6 @@ public class FileService {
             Recipe recipe = new Recipe(stringArr);
             recipeList.add(recipe);
         }
-        System.out.println(recipeList);
         return recipeList;
     }
 }

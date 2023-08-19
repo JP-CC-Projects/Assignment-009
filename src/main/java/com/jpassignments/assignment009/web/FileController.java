@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.List;
 
+import static com.jpassignments.assignment009.service.FileService.getRecipeList;
+
 @RestController
 public class FileController {
 
@@ -63,8 +65,11 @@ public class FileController {
 //    }
 
     @GetMapping("/")
-    public List<Recipe> readLines() throws IOException {
-        Recipe recipe = FileService.getRecipeList();
-        return null;
+    public List<String> readLines() throws IOException {
+        Recipe recipe = new Recipe();
+        recipe = getRecipeList("glutenFree", true);
+        FileService recipePrinter = new FileService();
+        recipePrinter.fileService();
+        return recipePrinter.fileService();
     }
 }
