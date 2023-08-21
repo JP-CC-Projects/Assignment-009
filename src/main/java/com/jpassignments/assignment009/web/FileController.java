@@ -1,7 +1,6 @@
 package com.jpassignments.assignment009.web;
 
 import com.jpassignments.assignment009.service.FileService;
-import domain.Recipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -9,8 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.List;
-
-import static com.jpassignments.assignment009.service.FileService.getRecipeList;
 
 @RestController
 public class FileController {
@@ -24,6 +21,10 @@ public class FileController {
     @Autowired
     private FileService fileService;
 
+    @GetMapping("/all-recipes")
+    public List<String> allRecipes() throws IOException {
+        return null;
+    }
     @GetMapping("/gluten-free")
     public String glutenFreeRecipes() throws IOException {
         return null;
@@ -44,32 +45,11 @@ public class FileController {
         return null;
     }
 
-    @GetMapping("/all-recipes")
-    public List<String> allRecipes() throws IOException {
-        return null;
-    }
 
 
-
-//    @GetMapping("/")
-//    public List<Recipe> readLines() throws IOException {
-//        System.out.println("################################");
-//        FileService fileService = applicationContext.getBean(FileService.class);
-//        System.out.println(fileService);
-//        fileService = applicationContext.getBean(FileService.class);
-//        System.out.println(fileService);
-//        fileService = applicationContext.getBean(FileService.class);
-//        System.out.println(fileService);
-//
-//        return fileService.parseFileAndReturnRecipeList("src/main/resources/recipes.txt");
-//    }
 
     @GetMapping("/")
     public List<String> readLines() throws IOException {
-        Recipe recipe = new Recipe();
-        recipe = getRecipeList("glutenFree", true);
-        FileService recipePrinter = new FileService();
-        recipePrinter.fileService();
-        return recipePrinter.fileService();
+        return null;
     }
 }

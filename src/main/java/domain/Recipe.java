@@ -32,22 +32,6 @@ public class Recipe {
         this.vegan = Boolean.parseBoolean(stringArrList.get(10));
         this.vegetarian = Boolean.parseBoolean(stringArrList.get(11));
     }
-
-    public Recipe (String[] stringArr){
-        this.cookingMinutes = Integer.parseInt(stringArr[0]);
-        this.dairyFree = Boolean.parseBoolean(stringArr[1]);
-        this.glutenFree = Boolean.parseBoolean(stringArr[2]);
-        this.instructions = stringArr[3];
-        this.preparationMinutes = Integer.parseInt(stringArr[4]);
-        this.pricePerServing = new BigDecimal(stringArr[5]);
-        this.readyInMinutes = Integer.parseInt(stringArr[6]);
-        this.servings = Double.parseDouble(stringArr[7]);
-        this.spoonacularScore = Double.parseDouble(stringArr[8]);
-        this.title = stringArr[9];
-        this.vegan = Boolean.parseBoolean(stringArr[10]);
-        this.vegetarian = Boolean.parseBoolean(stringArr[11]);
-    }
-
     public Integer getCookingMinutes() {
         return cookingMinutes;
     }

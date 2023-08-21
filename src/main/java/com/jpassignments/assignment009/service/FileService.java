@@ -4,91 +4,98 @@ import domain.Recipe;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.csv.*;
 
 @Service
-//@Scope("prototype")
 public class FileService {
 
+    private List<List<String>> listOfListOfRecipeRecordsAsStringArrs = new ArrayList<>();
+    private Iterable<CSVRecord> records;
+    List<String> headers;
+    private final String fileName = "src/main/resources/recipes.txt";
+
     //No args constructor that returns all recipes.
-    public static Recipe getRecipeList() {
+    public Recipe getRecipeList() {
         return null;
     }
 
     //Helper class that takes a recipe property name and a boolean
     //converts it to an ArrayList of POJOs
     //and finally returns the Recipe POJOs as Strings
-    public static Recipe getRecipeList(String columnName, Boolean bool) {
+    public List<List<String>> getRecipeList(String qualifier, String bool) throws IOException {
 
-        return null;
+        Reader in = new FileReader(fileName);
+        CSVFormat csvFormat = customCSVFormatBuilder();
+        this.records = csvFormat.parse(in);
+        this.headers = getHeaders(this.records);
+        //        add headers to private variable (listOfListOfRecipeRecordsAsStringArrs)
+        //        that will be returned to the controller in the form of a List<List<String>>
+        listOfListOfRecipeRecordsAsStringArrs.add(headers);
+        List<Recipe> listOfRecipePOJOs = takeCSVRecordsConvertToPOJOs(this.records);
+        List<String> stringers = getFilteredRecipeList(listOfRecipePOJOs, qualifier, bool);
+//        System.out.println("List of Recipe POJO: " + listOfRecipePOJOs);
+
+        return this.listOfListOfRecipeRecordsAsStringArrs;
     }
+    //create a method that takes a List<Recipe>, a recipe property name and a boolean
+    //and returns  a List<List<String>>
+    //that will be returned to the controller in the form of a List<List<String>>
 
+    public List<String> getFilteredRecipeList(List<Recipe> listOfRecipePOJOs, String qualifier, String bool) {
 
-    public List<String> fileService() throws IOException {
-        Iterable<CSVRecord> convertedCsvRecords = recipeReaderToCSVRecordList();
-        List<String> convertedStringArrList = csvRecordToStringArrList(convertedCsvRecords);
-//        System.out.println("convertedStringArrList" + convertedStringArrList);
-        return convertedStringArrList;
-    }
-
-    public Iterable<CSVRecord> recipeReaderToCSVRecordList() throws IOException {
-        Reader inputFile = new FileReader("src/main/resources/recipes.txt");
-        Iterable<CSVRecord> csvRecordList = CSVFormat.DEFAULT
-                .withIgnoreSurroundingSpaces()
-                .withEscape('\\')
-                .withHeader()
-                .parse(inputFile);
-        return csvRecordList;
-    }
-
-    public List<String> csvRecordToStringArrList(Iterable<CSVRecord> csvRecordList) {
-        List<String> stringList = new ArrayList<>();
-        for (CSVRecord csvRecord : csvRecordList) {
-            for (int i = 0; i < 11; i++) {
-                stringList.add(csvRecord.get(i));
+        List<String> stringArr = new ArrayList<>();
+        for(Recipe recipePojo : listOfRecipePOJOs){
+            if(recipePojo.getGlutenFree() == Boolean.parseBoolean(bool)){
+                stringArr.add(String.valueOf(recipePojo.getCookingMinutes()));
+                stringArr.add(String.valueOf(recipePojo.getDairyFree()));
+                stringArr.add(String.valueOf(recipePojo.getGlutenFree()));
+                stringArr.add(String.valueOf(recipePojo.getInstructions()));
+                stringArr.add(String.valueOf(recipePojo.getPricePerServing()));
+                stringArr.add(String.valueOf(recipePojo.getPreparationMinutes()));
+                stringArr.add(String.valueOf(recipePojo.getServings()));
+                stringArr.add(String.valueOf(recipePojo.getSpoonacularScore()));
+                stringArr.add(String.valueOf(recipePojo.getTitle()));
+                stringArr.add(String.valueOf(recipePojo.getVegan()));
+                stringArr.add(String.valueOf(recipePojo.getVegetarian()));
             }
         }
-//        System.out.println(stringList);
-        return stringList;
+        return stringArr;
     }
 
-    public List<String> csvRecordToStringArrList(CSVRecord csvRecord) {
-        List<String> stringArrList = new ArrayList<>();
-        for (String s : csvRecord) {
-            stringArrList.add(s);
-        }
-        return stringArrList;
-    }
-
-
-    public List<Recipe> parseFileAndReturnRecipeList(String fileName) throws IOException {
-        List<String> recipeStringList = this.fileToStringList(fileName);
-        List<Recipe> listOfRecipes = stringListToRecipeList(recipeStringList);
-        return listOfRecipes;
-    }
-
-    public List<String> fileToStringList(String fileName) throws IOException {
-        List<String> list = new ArrayList<>();
-        File file = new File(fileName);
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-        String line = "";
-
-        while ((line = bufferedReader.readLine()) != null) {
-            list.add(line);
-        }
-        return list;
-    }
-
-    public List<Recipe> stringListToRecipeList(List<String> recipeStringList) {
+    public List<Recipe> takeCSVRecordsConvertToPOJOs(Iterable<CSVRecord> records) {
         List<Recipe> recipeList = new ArrayList<>();
-        for (String recipeStringLine : recipeStringList) {
-            String[] stringArr = recipeStringLine.split(",");
-            Recipe recipe = new Recipe(stringArr);
-            recipeList.add(recipe);
+        for (CSVRecord record : records) {
+            recipeList.add(new Recipe(record.stream().toList()));
         }
         return recipeList;
     }
+
+    public CSVFormat customCSVFormatBuilder() {
+        CSVFormat inputCsvFormat = CSVFormat.DEFAULT.builder()
+                .setEscape('\\')
+                .setIgnoreSurroundingSpaces(true)
+                .setHeader()
+                .setTrim(true)
+                .setSkipHeaderRecord(false)  // skip header
+                .build();
+        return inputCsvFormat;
+    }
+
+    public List<String> getHeaders(Iterable<CSVRecord> records) {
+
+        List<String> headers = this.records
+                .iterator()
+                .next()
+                .toMap()
+                .keySet()
+                .stream()
+                .toList();
+        return headers;
+    }
+
 }
