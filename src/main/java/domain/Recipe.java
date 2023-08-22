@@ -1,5 +1,6 @@
 package domain;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Recipe {
@@ -10,11 +11,11 @@ public class Recipe {
     private Integer preparationMinutes; //4
     private BigDecimal pricePerServing; //5
     private Integer readyInMinutes; //6
-    private Double servings;
-    private Double spoonacularScore;
-    private String title;
-    private Boolean vegan;
-    private Boolean vegetarian;
+    private Double servings; //7
+    private Double spoonacularScore; //8
+    private String title; //9
+    private Boolean vegan; //10
+    private Boolean vegetarian; //11
     public Recipe (){
 
     }
@@ -127,4 +128,6 @@ public class Recipe {
     public void setVegetarian(Boolean vegetarian) {
         this.vegetarian = vegetarian;
     }
+
+
 }

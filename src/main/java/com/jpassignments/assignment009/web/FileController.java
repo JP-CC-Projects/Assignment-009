@@ -26,30 +26,32 @@ public class FileController {
         return null;
     }
     @GetMapping("/gluten-free")
-    public String glutenFreeRecipes() throws IOException {
-        return null;
+    public List<List<String>> glutenFreeRecipes() throws IOException {
+        return new FileService().getRecipeList(List.of("Gluten Free"), List.of(true));
     }
 
     @GetMapping("/vegan")
-    public List<String> veganRecipes() throws IOException {
-        return null;
+    public List<List<String>> veganRecipes() throws IOException {
+        return new FileService().getRecipeList(List.of("Vegan"), List.of(true));
     }
 
     @GetMapping("/vegan-and-gluten-free")
-    public List<String> veganAndGlutenFreeRecipes() throws IOException {
-        return null;
+    public List<List<String>> veganAndGlutenFreeRecipes() throws IOException {
+        return new FileService().getRecipeList(
+                List.of("Vegan", "Gluten Free"),
+                List.of(true, true));
     }
 
     @GetMapping("/vegetarian")
-    public List<String> vegetarianRecipes() throws IOException {
-        return null;
+    public List<List<String>> vegetarianRecipes() throws IOException {
+        return new FileService().getRecipeList(List.of("Vegetarian"), List.of(true));
     }
 
 
 
 
     @GetMapping("/")
-    public List<String> readLines() throws IOException {
+    public List<List<String>> readLines() throws IOException {
         return null;
     }
 }
