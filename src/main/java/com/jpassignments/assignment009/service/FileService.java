@@ -1,13 +1,9 @@
 package com.jpassignments.assignment009.service;
-
 import domain.Recipe;
 import org.springframework.stereotype.Service;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-
-
 import org.apache.commons.csv.*;
 
 @Service
@@ -40,7 +36,7 @@ public class FileService {
                     .stream()
                     .filter(recipe -> {
                         String property = getPropertyByHeader(recipe, qualifier);
-                        return bool == Boolean.valueOf(property);
+                        return bool == Boolean.parseBoolean(property);
                     })
                     .toList();
         }

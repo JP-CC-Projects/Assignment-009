@@ -11,19 +11,9 @@ import java.util.List;
 
 @RestController
 public class FileController {
-
-    //assigns key "object.name" located in application.properties to objectName;
-    @Value("${object.name}")
-    private String objectName;
-
-    @Autowired
-    private ApplicationContext applicationContext;
-    @Autowired
-    private FileService fileService;
-
     @GetMapping("/all-recipes")
-    public List<String> allRecipes() throws IOException {
-        return null;
+    public List<List<String>> allRecipes() throws IOException {
+        return new FileService().getRecipeList(List.of(), List.of());
     }
     @GetMapping("/gluten-free")
     public List<List<String>> glutenFreeRecipes() throws IOException {
